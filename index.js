@@ -22,7 +22,8 @@ module.exports = function(sails) {
         dirs: [
           path.resolve(sails.config.appPath,'api','controllers'),
           path.resolve(sails.config.appPath,'api','models'),
-          path.resolve(sails.config.appPath,'api','services')
+          path.resolve(sails.config.appPath,'api','services'),
+          path.resolve(sails.config.appPath,'config')
         ]
       }
     },
@@ -79,6 +80,12 @@ module.exports = function(sails) {
           // Reload ORM
           sails.emit('hook:orm:reload');
 
+        });
+
+        sails.log.verbose("Detected userconfig change -- reloading configs");
+
+        sails.hooks.userconfig.loadModules(function() {
+          sails.log.verbose("Done reloading configs");
         });
 
       }, 100));
